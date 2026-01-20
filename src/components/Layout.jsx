@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, ShoppingCart, FileText, Package, Warehouse, BarChart3, Users, Settings, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLogoutMutation } from '../redux/api/usersApiSlice';
 import { logout } from '../redux/slices/authSlice';

@@ -52,6 +52,7 @@ const Login = () => {
                                     type="email"
                                     required
                                     className="form-control bg-light border-0 py-2 ms-0"
+                                    style={{ textTransform: 'none' }}
                                     placeholder="name@business.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -66,6 +67,7 @@ const Login = () => {
                                     type="password"
                                     required
                                     className="form-control bg-light border-0 py-2 ms-0"
+                                    style={{ textTransform: 'none' }}
                                     placeholder="••••••••"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}

@@ -160,8 +160,22 @@ const POS = () => {
         }
     };
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 992);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
-        <div className="row g-4 animate-fade-in" style={{ height: 'calc(100vh - 120px)', overflow: 'hidden' }}>
+        <div className="row g-4 animate-fade-in" style={{
+            height: isMobile ? 'auto' : 'calc(100vh - 120px)',
+            overflow: isMobile ? 'visible' : 'hidden',
+            paddingBottom: isMobile ? '80px' : '0' // Extra padding for mobile scrolling
+        }}>
             {/* Left: Products */}
             <div className="col-12 col-lg-8 d-flex flex-column h-100">
                 <div className="input-group mb-4 shadow-sm">
@@ -178,7 +192,7 @@ const POS = () => {
                     />
                 </div>
 
-                <div className="row g-3 overflow-auto flex-grow-1 pe-2 pb-2" style={{ maxHeight: '100%' }}>
+                <div className="row g-3 overflow-auto flex-grow-1 pe-2 pb-2" style={{ maxHeight: isMobile ? '60vh' : '100%' }}>
                     {productsData?.products?.map(product => (
                         <div key={product._id} className="col-6 col-md-4 col-xl-3">
                             <div

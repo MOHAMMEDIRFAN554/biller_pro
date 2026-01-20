@@ -21,12 +21,32 @@ const SidebarItem = ({ to, icon, label, active, collapsed }) => (
 
 const Layout = () => {
     const [collapsed, setCollapsed] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [showMobileSidebar, setShowMobileSidebar] = useState(false);
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [logoutApiCall] = useLogoutMutation();
     const { userInfo } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+            if (window.innerWidth >= 768) {
+                setShowMobileSidebar(false);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Close mobile sidebar on route change
+    useEffect(() => {
+        if (isMobile) {
+            setShowMobileSidebar(false);
+        }
+    }, [location, isMobile]);
 
     const handleLogout = async () => {
         try {
@@ -49,26 +69,45 @@ const Layout = () => {
         { to: '/settings', label: 'Settings', icon: 'gear' },
     ];
 
+    const sidebarWidth = isMobile ? '280px' : (collapsed ? '80px' : '280px');
+    const sidebarTransform = isMobile ? (showMobileSidebar ? 'translateX(0)' : 'translateX(-100%)') : 'none';
+
     return (
-        <div className="d-flex vw-100 vh-100 bg-light text-dark overflow-hidden">
+        <div className="d-flex vw-100 vh-100 bg-light text-dark overflow-hidden position-relative">
+            {/* Mobile Backdrop */}
+            {isMobile && showMobileSidebar && (
+                <div
+                    className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"
+                    style={{ zIndex: 1040 }}
+                    onClick={() => setShowMobileSidebar(false)}
+                />
+            )}
+
             {/* Sidebar */}
             <aside
-                className={`bg-white border-end d-flex flex-column h-100 shadow-sm transition-all`}
+                className={`bg-white border-end d-flex flex-column h-100 shadow-sm transition-all ${isMobile ? 'position-absolute top-0 start-0' : ''}`}
                 style={{
-                    width: collapsed ? '80px' : '280px',
-                    minWidth: collapsed ? '80px' : '280px',
-                    transition: 'width 0.3s ease'
+                    width: sidebarWidth,
+                    minWidth: sidebarWidth,
+                    zIndex: 1050,
+                    transform: sidebarTransform,
+                    transition: 'all 0.3s ease'
                 }}
             >
                 <div className="p-4 border-bottom d-flex align-items-center justify-content-between" style={{ height: '72px' }}>
-                    {!collapsed && (
+                    {(!collapsed || isMobile) && (
                         <div className="d-flex align-items-center gap-2">
                             <div className="rounded bg-primary p-1 d-flex align-items-center justify-content-center text-white fw-bold" style={{ width: '32px', height: '32px' }}>B</div>
                             <span className="fw-bold fs-5 text-dark">Biller Pro</span>
                         </div>
                     )}
-                    {collapsed && (
+                    {collapsed && !isMobile && (
                         <div className="rounded bg-primary d-flex align-items-center justify-content-center fw-bold text-white mx-auto" style={{ width: '32px', height: '32px' }}>B</div>
+                    )}
+                    {isMobile && (
+                        <button className="btn btn-sm btn-light border-0" onClick={() => setShowMobileSidebar(false)}>
+                            <i className="bi bi-x-lg"></i>
+                        </button>
                     )}
                 </div>
 
@@ -80,25 +119,27 @@ const Layout = () => {
                             icon={item.icon}
                             label={item.label}
                             active={location.pathname === item.to}
-                            collapsed={collapsed}
+                            collapsed={collapsed && !isMobile}
                         />
                     ))}
                 </div>
 
                 <div className="p-3 border-top bg-white">
-                    <button
-                        onClick={() => setCollapsed(!collapsed)}
-                        className="btn btn-light w-100 d-flex align-items-center gap-3 px-3 py-2 mb-2 text-secondary border-0"
-                    >
-                        {collapsed ? <i className="bi bi-layout-sidebar-inset fs-5 mx-auto"></i> : <><i className="bi bi-layout-sidebar fs-5"></i> <span className="small fw-medium">Collapse</span></>}
-                    </button>
+                    {!isMobile && (
+                        <button
+                            onClick={() => setCollapsed(!collapsed)}
+                            className="btn btn-light w-100 d-flex align-items-center gap-3 px-3 py-2 mb-2 text-secondary border-0"
+                        >
+                            {collapsed ? <i className="bi bi-layout-sidebar-inset fs-5 mx-auto"></i> : <><i className="bi bi-layout-sidebar fs-5"></i> <span className="small fw-medium">Collapse</span></>}
+                        </button>
+                    )}
 
                     <button
                         onClick={handleLogout}
                         className="btn btn-outline-danger w-100 d-flex align-items-center gap-3 px-3 py-2 border-0"
                     >
-                        <i className={`bi bi-box-arrow-right fs-5 ${collapsed ? "mx-auto" : ""}`}></i>
-                        {!collapsed && <span className="small fw-medium">Logout</span>}
+                        <i className={`bi bi-box-arrow-right fs-5 ${collapsed && !isMobile ? "mx-auto" : ""}`}></i>
+                        {(!collapsed || isMobile) && <span className="small fw-medium">Logout</span>}
                     </button>
                 </div>
             </aside>
@@ -108,9 +149,16 @@ const Layout = () => {
                 {/* Header */}
                 <header className="navbar navbar-expand bg-white border-bottom px-4 py-2 shadow-sm sticky-top" style={{ height: '72px', zIndex: 1020 }}>
                     <div className="container-fluid p-0">
-                        <h2 className="navbar-brand mb-0 h4 fw-bold text-capitalize text-muted">
-                            {location.pathname.split('/')[1] || 'Dashboard'}
-                        </h2>
+                        <div className="d-flex align-items-center gap-3">
+                            {isMobile && (
+                                <button className="btn btn-light border p-1 px-2" onClick={() => setShowMobileSidebar(true)}>
+                                    <i className="bi bi-list fs-4"></i>
+                                </button>
+                            )}
+                            <h2 className="navbar-brand mb-0 h4 fw-bold text-capitalize text-muted">
+                                {location.pathname.split('/')[1] || 'Dashboard'}
+                            </h2>
+                        </div>
                         <div className="ms-auto d-flex align-items-center gap-3">
                             <div className="text-end d-none d-sm-block">
                                 <p className="mb-0 small fw-bold text-dark">{userInfo?.name}</p>

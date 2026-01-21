@@ -15,11 +15,11 @@ const Settings = () => {
 
     // Profile State
     const [profileForm, setProfileForm] = useState({
-        name: '',
-        address: '',
-        phone: '',
         email: '',
-        website: ''
+        website: '',
+        upiId: '',
+        upiName: '',
+        enableQrPayments: false
     });
 
     // User Management
@@ -42,11 +42,11 @@ const Settings = () => {
     useEffect(() => {
         if (profile) {
             setProfileForm({
-                name: profile.name || '',
-                address: profile.address || '',
-                phone: profile.phone || '',
                 email: profile.email || '',
-                website: profile.website || ''
+                website: profile.website || '',
+                upiId: profile.upiId || '',
+                upiName: profile.upiName || '',
+                enableQrPayments: profile.enableQrPayments || false
             });
         }
     }, [profile]);
@@ -192,6 +192,41 @@ const Settings = () => {
                                                 value={profileForm.website}
                                                 onChange={e => setProfileForm({ ...profileForm, website: e.target.value })}
                                             />
+                                        </div>
+                                        <div className="col-12 mt-4">
+                                            <h5 className="fw-bold text-dark mb-4">Payment & QR Configuration</h5>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label className="form-label small fw-bold text-muted">UPI ID for Payments</label>
+                                            <input
+                                                className="form-control"
+                                                placeholder="example@upi"
+                                                value={profileForm.upiId}
+                                                onChange={e => setProfileForm({ ...profileForm, upiId: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label className="form-label small fw-bold text-muted">UPI Display Name</label>
+                                            <input
+                                                className="form-control"
+                                                placeholder="Business Name"
+                                                value={profileForm.upiName}
+                                                onChange={e => setProfileForm({ ...profileForm, upiName: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="col-12">
+                                            <div className="form-check form-switch">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="enableQr"
+                                                    checked={profileForm.enableQrPayments}
+                                                    onChange={e => setProfileForm({ ...profileForm, enableQrPayments: e.target.checked })}
+                                                />
+                                                <label className="form-check-label small fw-bold text-muted" htmlFor="enableQr">
+                                                    Enable Dynamic UPI QR Generation in POS
+                                                </label>
+                                            </div>
                                         </div>
                                         <div className="col-12 mt-4">
                                             <button

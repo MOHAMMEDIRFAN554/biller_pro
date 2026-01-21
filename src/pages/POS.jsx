@@ -482,6 +482,20 @@ const POS = () => {
                                                                 <i className="bi bi-x-circle"></i>
                                                             </button>
                                                         </div>
+                                                        {p.mode === 'UPI' && profile?.enableQrPayments && profile?.upiId && (
+                                                            <div className="col-12 mt-2 text-center bg-white p-3 rounded-3 border">
+                                                                <p className="xsmall fw-bold text-primary mb-2 text-uppercase">Scan to Pay ₹{p.amount}</p>
+                                                                <div className="d-flex justify-content-center mb-2">
+                                                                    <img
+                                                                        src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`upi://pay?pa=${profile.upiId}&pn=${profile.upiName || profile.name}&am=${Number(p.amount).toFixed(2)}&cu=INR`)}`}
+                                                                        alt="UPI QR"
+                                                                        className="img-fluid"
+                                                                        style={{ width: '150px', height: '150px' }}
+                                                                    />
+                                                                </div>
+                                                                <p className="xxsmall text-muted mb-0">{profile.upiId}</p>
+                                                            </div>
+                                                        )}
                                                         {(p.mode === 'UPI' || p.mode === 'Card') && (
                                                             <div className="col-12 mt-2">
                                                                 <input

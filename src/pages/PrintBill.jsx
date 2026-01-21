@@ -160,6 +160,18 @@ const PrintBill = () => {
                         )}
                     </div>
                     <div className="mt-4 text-center xsmall border-top border-dark pt-2 opacity-75">
+                        {profile?.enableQrPayments && profile?.upiId && (bill.balanceAmount > 0 || bill.status !== 'Fully Settled') && (
+                            <div className="mb-3">
+                                <p className="xxsmall fw-bold mb-1">SCAN TO PAY BALANCE DUE: ₹{bill.balanceAmount}</p>
+                                <img
+                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(`upi://pay?pa=${profile.upiId}&pn=${profile.upiName || profile.name}&am=${Number(bill.balanceAmount).toFixed(2)}&cu=INR`)}`}
+                                    alt="UPI QR"
+                                    className="img-fluid"
+                                    style={{ width: '100px', height: '100px' }}
+                                />
+                                <p className="xxsmall text-muted mb-0">{profile.upiId}</p>
+                            </div>
+                        )}
                         <p className="mb-0">Thank you for your visit!</p>
                         <p className="mb-0 fw-bold">{profile?.name || 'Biller Pro'}</p>
                     </div>

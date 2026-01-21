@@ -104,13 +104,13 @@ const PrintBill = () => {
                     <div className="border-top border-dark border-dashed pt-2 xsmall">
                         <div className="d-flex justify-content-between">
                             <span>Subtotal:</span>
-                            <span>{bill.subTotal.toFixed(2)}</span>
+                            <span>{(bill.subTotal || 0).toFixed(2)}</span>
                         </div>
                         <div className="d-flex justify-content-between">
                             <span>Tax Amount:</span>
-                            <span>{bill.taxAmount.toFixed(2)}</span>
+                            <span>{(bill.taxAmount || 0).toFixed(2)}</span>
                         </div>
-                        {bill.discountAmount > 0 && (
+                        {(bill.discountAmount || 0) > 0 && (
                             <div className="d-flex justify-content-between fw-bold">
                                 <span>Discount:</span>
                                 <span>-{bill.discountAmount}</span>
@@ -124,36 +124,36 @@ const PrintBill = () => {
                         )}
                         <div className="d-flex justify-content-between fw-bold fs-6 border-top border-dark border-dashed pt-2 mt-2">
                             <span>GRAND TOTAL:</span>
-                            <span>₹{bill.grandTotal}</span>
+                            <span>₹{bill.grandTotal || 0}</span>
                         </div>
-                        {(bill.paidAmount < bill.grandTotal || (bill.customer?.ledgerBalance > 0)) && (
+                        {((bill.paidAmount || 0) < (bill.grandTotal || 0) || (bill.customer?.ledgerBalance > 0)) && (
                             <div className="border-top border-dark border-dashed pt-2 mt-2">
                                 <div className="d-flex justify-content-between">
                                     <span>Paid Amount:</span>
-                                    <span>{bill.paidAmount}</span>
+                                    <span>{bill.paidAmount || 0}</span>
                                 </div>
-                                {bill.returnedAmount > 0 && (
+                                {(bill.returnedAmount || 0) > 0 && (
                                     <div className="d-flex justify-content-between text-muted">
                                         <span>Change Returned:</span>
-                                        <span>{bill.returnedAmount}</span>
+                                        <span>{bill.returnedAmount || 0}</span>
                                     </div>
                                 )}
-                                {((bill.customer?.ledgerBalance || 0) - bill.balanceAmount > 0) && (
+                                {((bill.customer?.ledgerBalance || 0) - (bill.balanceAmount || 0) > 0) && (
                                     <div className="d-flex justify-content-between text-muted">
                                         <span>Previous Outstanding:</span>
-                                        <span>{(bill.customer.ledgerBalance - bill.balanceAmount).toFixed(2)}</span>
+                                        <span>{((bill.customer.ledgerBalance || 0) - (bill.balanceAmount || 0)).toFixed(2)}</span>
                                     </div>
                                 )}
-                                {bill.balanceAmount > 0 && (
+                                {(bill.balanceAmount || 0) > 0 && (
                                     <div className="d-flex justify-content-between">
                                         <span>Balance Due:</span>
-                                        <span>{bill.balanceAmount}</span>
+                                        <span>{bill.balanceAmount || 0}</span>
                                     </div>
                                 )}
-                                {bill.customer?.ledgerBalance > 0 && (
+                                {(bill.customer?.ledgerBalance || 0) > 0 && (
                                     <div className="d-flex justify-content-between fw-bold border-top border-dark border-dashed pt-1 mt-1">
                                         <span>Total Outstanding:</span>
-                                        <span>{bill.customer.ledgerBalance}</span>
+                                        <span>{bill.customer.ledgerBalance || 0}</span>
                                     </div>
                                 )}
                             </div>
@@ -225,51 +225,51 @@ const PrintBill = () => {
                     <div className="border-top border-dark pt-2">
                         <div className="d-flex justify-content-between mb-1">
                             <span className="small">Subtotal</span>
-                            <span className="fw-bold small">{bill.subTotal}</span>
+                            <span className="fw-bold small">{bill.subTotal || 0}</span>
                         </div>
                         <div className="d-flex justify-content-between mb-1">
                             <span className="small">Tax</span>
-                            <span className="small">{bill.taxAmount}</span>
+                            <span className="small">{bill.taxAmount || 0}</span>
                         </div>
-                        {bill.discountAmount > 0 && (
+                        {(bill.discountAmount || 0) > 0 && (
                             <div className="d-flex justify-content-between mb-1 text-danger">
                                 <span className="small">Discount</span>
-                                <span className="small fw-bold">-{bill.discountAmount}</span>
+                                <span className="small fw-bold">-{bill.discountAmount || 0}</span>
                             </div>
                         )}
                         <div className="d-flex justify-content-between border-top border-dark mt-2 pt-2">
                             <span className="fw-bold">Total</span>
-                            <span className="fw-bold fs-5">₹{bill.grandTotal}</span>
+                            <span className="fw-bold fs-5">₹{bill.grandTotal || 0}</span>
                         </div>
 
-                        {(bill.paidAmount < bill.grandTotal || (bill.customer?.ledgerBalance > 0)) && (
+                        {((bill.paidAmount || 0) < (bill.grandTotal || 0) || (bill.customer?.ledgerBalance > 0)) && (
                             <div className="mt-2 pt-2 border-top border-dashed">
                                 <div className="d-flex justify-content-between xsmall">
                                     <span className="text-muted">Paid</span>
-                                    <span className="fw-bold">{bill.paidAmount}</span>
+                                    <span className="fw-bold">{bill.paidAmount || 0}</span>
                                 </div>
-                                {bill.returnedAmount > 0 && (
+                                {(bill.returnedAmount || 0) > 0 && (
                                     <div className="d-flex justify-content-between xsmall text-muted">
                                         <span>Change Returned</span>
-                                        <span className="fw-bold">{bill.returnedAmount}</span>
+                                        <span className="fw-bold">{bill.returnedAmount || 0}</span>
                                     </div>
                                 )}
-                                {((bill.customer?.ledgerBalance || 0) - bill.balanceAmount > 0) && (
+                                {((bill.customer?.ledgerBalance || 0) - (bill.balanceAmount || 0) > 0) && (
                                     <div className="d-flex justify-content-between xsmall">
                                         <span className="text-muted">Prev. Due</span>
-                                        <span className="fw-bold">{(bill.customer.ledgerBalance - bill.balanceAmount).toFixed(2)}</span>
+                                        <span className="fw-bold">{((bill.customer.ledgerBalance || 0) - (bill.balanceAmount || 0)).toFixed(2)}</span>
                                     </div>
                                 )}
-                                {bill.balanceAmount > 0 && (
+                                {(bill.balanceAmount || 0) > 0 && (
                                     <div className="d-flex justify-content-between xsmall">
                                         <span className="text-muted">Balance Due</span>
-                                        <span className="fw-bold text-danger">{bill.balanceAmount}</span>
+                                        <span className="fw-bold text-danger">{bill.balanceAmount || 0}</span>
                                     </div>
                                 )}
-                                {bill.customer?.ledgerBalance > 0 && (
+                                {(bill.customer?.ledgerBalance || 0) > 0 && (
                                     <div className="d-flex justify-content-between small fw-bold mt-1">
                                         <span>Total Outstanding</span>
-                                        <span className="text-danger">₹{bill.customer.ledgerBalance}</span>
+                                        <span className="text-danger">₹{bill.customer.ledgerBalance || 0}</span>
                                     </div>
                                 )}
                             </div>
@@ -346,50 +346,50 @@ const PrintBill = () => {
                             <div className="list-group list-group-flush">
                                 <div className="list-group-item d-flex justify-content-between bg-transparent px-0 border-0">
                                     <span className="text-muted">Sub-Total Amount</span>
-                                    <span className="fw-bold text-dark">₹{bill.subTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                    <span className="fw-bold text-dark">₹{(bill.subTotal || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                                 </div>
                                 <div className="list-group-item d-flex justify-content-between bg-transparent px-0 border-0">
                                     <span className="text-muted">GST & Taxes</span>
-                                    <span className="fw-bold text-dark">₹{bill.taxAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                    <span className="fw-bold text-dark">₹{(bill.taxAmount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                                 </div>
-                                {bill.discountAmount > 0 && (
+                                {(bill.discountAmount || 0) > 0 && (
                                     <div className="list-group-item d-flex justify-content-between bg-transparent px-0 border-0 text-danger">
                                         <span className="text-muted">Total Discount</span>
-                                        <span className="fw-bold">-₹{bill.discountAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                        <span className="fw-bold">-₹{(bill.discountAmount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                                     </div>
                                 )}
                                 <div className="list-group-item d-flex justify-content-between bg-transparent px-0 pt-3 mt-2 border-top border-2 border-dark">
                                     <span className="h5 fw-bold mb-0">GRAND TOTAL</span>
-                                    <span className="h5 fw-bold mb-0 text-primary">₹{bill.grandTotal.toLocaleString()}</span>
+                                    <span className="h5 fw-bold mb-0 text-primary">₹{(bill.grandTotal || 0).toLocaleString()}</span>
                                 </div>
-                                {(bill.paidAmount < bill.grandTotal || (bill.customer?.ledgerBalance > 0)) && (
+                                {((bill.paidAmount || 0) < (bill.grandTotal || 0) || (bill.customer?.ledgerBalance > 0)) && (
                                     <div className="mt-2 pt-2 border-top">
                                         <div className="list-group-item d-flex justify-content-between bg-transparent px-0 border-0 py-1">
                                             <span className="text-muted">Paid Amount</span>
-                                            <span className="fw-bold text-dark">₹{bill.paidAmount.toLocaleString()}</span>
+                                            <span className="fw-bold text-dark">₹{(bill.paidAmount || 0).toLocaleString()}</span>
                                         </div>
-                                        {bill.returnedAmount > 0 && (
+                                        {(bill.returnedAmount || 0) > 0 && (
                                             <div className="list-group-item d-flex justify-content-between bg-transparent px-0 border-0 py-1">
                                                 <span className="text-muted">Change Returned</span>
-                                                <span className="fw-bold text-muted">₹{bill.returnedAmount.toLocaleString()}</span>
+                                                <span className="fw-bold text-muted">₹{(bill.returnedAmount || 0).toLocaleString()}</span>
                                             </div>
                                         )}
-                                        {((bill.customer?.ledgerBalance || 0) - bill.balanceAmount > 0) && (
+                                        {((bill.customer?.ledgerBalance || 0) - (bill.balanceAmount || 0) > 0) && (
                                             <div className="list-group-item d-flex justify-content-between bg-transparent px-0 border-0 py-1">
                                                 <span className="text-muted">Previous Outstanding</span>
-                                                <span className="fw-bold text-muted">₹{(bill.customer.ledgerBalance - bill.balanceAmount).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                                <span className="fw-bold text-muted">₹{((bill.customer.ledgerBalance || 0) - (bill.balanceAmount || 0)).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                                             </div>
                                         )}
-                                        {bill.balanceAmount > 0 && (
+                                        {(bill.balanceAmount || 0) > 0 && (
                                             <div className="list-group-item d-flex justify-content-between bg-transparent px-0 border-0 py-1">
                                                 <span className="text-muted">Balance Due (Inv)</span>
-                                                <span className="fw-bold text-danger">₹{bill.balanceAmount.toLocaleString()}</span>
+                                                <span className="fw-bold text-danger">₹{(bill.balanceAmount || 0).toLocaleString()}</span>
                                             </div>
                                         )}
-                                        {bill.customer?.ledgerBalance > 0 && (
+                                        {(bill.customer?.ledgerBalance || 0) > 0 && (
                                             <div className="list-group-item d-flex justify-content-between bg-transparent px-0 border-0 py-1 mt-2 border-top border-dashed">
                                                 <span className="text-muted fw-bold">Total Ledger Due</span>
-                                                <span className="fw-bold text-danger">₹{bill.customer.ledgerBalance.toLocaleString()}</span>
+                                                <span className="fw-bold text-danger">₹{(bill.customer.ledgerBalance || 0).toLocaleString()}</span>
                                             </div>
                                         )}
                                     </div>

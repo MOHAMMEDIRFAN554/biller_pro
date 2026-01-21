@@ -81,12 +81,12 @@ const PrintReceipt = () => {
                         <div className="my-3">
                             <div className="d-flex justify-content-between">
                                 <span>Amount Received:</span>
-                                <span className="fw-bold">₹{payment.totalPaid}</span>
+                                <span className="fw-bold">₹{payment.totalPaid || 0}</span>
                             </div>
-                            {payment.payments.map((p, i) => (
+                            {(payment.payments || []).map((p, i) => (
                                 <div key={i} className="d-flex justify-content-between xsmall opacity-75" style={{ fontSize: '10px' }}>
                                     <span>- {p.mode} {p.reference ? `(${p.reference})` : ''}</span>
-                                    <span>₹{p.amount}</span>
+                                    <span>₹{p.amount || 0}</span>
                                 </div>
                             ))}
                         </div>
@@ -129,11 +129,11 @@ const PrintReceipt = () => {
                         <div className="card border-0 bg-light p-4 mb-5">
                             <div className="row align-items-center">
                                 <div className="col-8">
-                                    <h4 className="mb-0 fw-bold">Amount Received ({payment.payments.map(p => p.mode).join(', ')})</h4>
+                                    <h4 className="mb-0 fw-bold">Amount Received ({(payment.payments || []).map(p => p.mode).join(', ')})</h4>
                                     <p className="text-muted mb-0 mt-1">{payment.note}</p>
                                 </div>
                                 <div className="col-4 text-end">
-                                    <h2 className="fw-bold text-primary mb-0">₹{payment.totalPaid.toLocaleString()}</h2>
+                                    <h2 className="fw-bold text-primary mb-0">₹{(payment.totalPaid || 0).toLocaleString()}</h2>
                                 </div>
                             </div>
                         </div>
@@ -148,11 +148,11 @@ const PrintReceipt = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {payment.payments.map((p, idx) => (
+                                    {(payment.payments || []).map((p, idx) => (
                                         <tr key={idx}>
                                             <td className="fw-bold py-2">{p.mode}</td>
                                             <td className="text-muted py-2">{p.reference || '-'}</td>
-                                            <td className="text-end fw-bold py-2">₹{p.amount.toLocaleString()}</td>
+                                            <td className="text-end fw-bold py-2">₹{(p.amount || 0).toLocaleString()}</td>
                                         </tr>
                                     ))}
                                 </tbody>

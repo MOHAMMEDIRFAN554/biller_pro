@@ -75,11 +75,11 @@ const PrintReturn = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {salesReturn.items.map((item, index) => (
+                            {(salesReturn.items || []).map((item, index) => (
                                 <tr key={index}>
                                     <td className="ps-0 py-1">{item.product?.name || 'Item'}</td>
-                                    <td className="text-center py-1">{item.quantity}</td>
-                                    <td className="text-end pe-0 py-1">{item.refundAmount}</td>
+                                    <td className="text-center py-1">{item.quantity || 0}</td>
+                                    <td className="text-end pe-0 py-1">{item.refundAmount || 0}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -88,11 +88,11 @@ const PrintReturn = () => {
                     <div className="border-top border-dark border-dashed pt-2 xsmall">
                         <div className="d-flex justify-content-between fw-bold fs-6">
                             <span>TOTAL REFUND:</span>
-                            <span>₹{salesReturn.totalRefundAmount}</span>
+                            <span>₹{salesReturn.totalRefundAmount || 0}</span>
                         </div>
                         <div className="d-flex justify-content-between mt-1 opacity-75">
                             <span>Refund Mode:</span>
-                            <span>{salesReturn.refundMode}</span>
+                            <span>{salesReturn.refundMode || 'N/A'}</span>
                         </div>
                     </div>
 
@@ -146,11 +146,11 @@ const PrintReturn = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {salesReturn.items.map((item, index) => (
+                            {(salesReturn.items || []).map((item, index) => (
                                 <tr key={index}>
                                     <td className="py-3 fw-medium text-uppercase">{item.product?.name || 'Product'}</td>
-                                    <td className="py-3 text-center">{item.quantity}</td>
-                                    <td className="py-3 text-end fw-bold text-danger">₹{item.refundAmount.toLocaleString()}</td>
+                                    <td className="py-3 text-center">{item.quantity || 0}</td>
+                                    <td className="py-3 text-end fw-bold text-danger">₹{(item.refundAmount || 0).toLocaleString()}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -161,7 +161,7 @@ const PrintReturn = () => {
                             <div className="card bg-light border-0 p-4 rounded-4">
                                 <div className="d-flex justify-content-between align-items-center">
                                     <span className="h5 fw-bold mb-0">TOTAL CREDIT</span>
-                                    <span className="h5 fw-bold mb-0 text-danger">₹{salesReturn.totalRefundAmount.toLocaleString()}</span>
+                                    <span className="h5 fw-bold mb-0 text-danger">₹{(salesReturn.totalRefundAmount || 0).toLocaleString()}</span>
                                 </div>
                             </div>
                         </div>

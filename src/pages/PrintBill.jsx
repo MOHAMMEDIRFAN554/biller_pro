@@ -161,12 +161,12 @@ const PrintBill = () => {
                     </div>
                     <div className="mt-4 text-center xsmall border-top border-dark pt-2 opacity-75">
                         {profile?.enableQrPayments && profile?.upiId && (bill.balanceAmount > 0 || bill.status !== 'Fully Settled') && (
-                            <div className="mb-3">
+                            <div className="mb-3 text-center">
                                 <p className="xxsmall fw-bold mb-1">SCAN TO PAY BALANCE DUE: ₹{bill.balanceAmount}</p>
                                 <img
                                     src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(`upi://pay?pa=${profile.upiId}&pn=${profile.upiName || profile.name}&am=${Number(bill.balanceAmount).toFixed(2)}&cu=INR`)}`}
                                     alt="UPI QR"
-                                    className="img-fluid"
+                                    className="img-fluid mx-auto"
                                     style={{ width: '100px', height: '100px' }}
                                 />
                                 <p className="xxsmall text-muted mb-0">{profile.upiId}</p>
@@ -286,6 +286,19 @@ const PrintBill = () => {
                                 )}
                             </div>
                         )}
+
+                        {profile?.enableQrPayments && profile?.upiId && (bill.balanceAmount > 0 || bill.status !== 'Fully Settled') && (
+                            <div className="mt-4 text-center p-3 border rounded bg-light">
+                                <p className="xxsmall fw-bold mb-2">SCAN TO PAY PENDING BALANCE: ₹{bill.balanceAmount}</p>
+                                <img
+                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(`upi://pay?pa=${profile.upiId}&pn=${profile.upiName || profile.name}&am=${Number(bill.balanceAmount).toFixed(2)}&cu=INR`)}`}
+                                    alt="UPI QR"
+                                    className="img-fluid bg-white p-1 border mx-auto"
+                                    style={{ width: '100px', height: '100px' }}
+                                />
+                                <p className="xxsmall text-muted mt-1 mb-0">{profile.upiId}</p>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
@@ -326,7 +339,7 @@ const PrintBill = () => {
                         <div className="col-6 text-end">
                             <p className="text-muted small text-uppercase fw-bold mb-2 ls-1">Invoice Details</p>
                             <p className="mb-1"><span className="text-muted">Date:</span> <span className="fw-bold">{new Date(bill.createdAt).toLocaleDateString('en-GB')}</span></p>
-                            <p className="mb-1"><span className="text-muted">Status:</span> <span className="badge bg-success bg-opacity-10 text-success border border-success fw-bold px-3">PAID</span></p>
+                            <p className="mb-1"><span className="text-muted">Status:</span> <span className="badge bg-success bg-opacity-10 text-success border border-success fw-bold px-3 text-uppercase">{bill.status || 'PAID'}</span></p>
                         </div>
                     </div>
 
@@ -410,7 +423,20 @@ const PrintBill = () => {
                         </div>
                     </div>
 
-                    <div className="mt-5 pt-5 text-center text-muted small border-top pt-4">
+                    {profile?.enableQrPayments && profile?.upiId && (bill.balanceAmount > 0 || bill.status !== 'Fully Settled') && (
+                        <div className="mt-5 text-center d-flex flex-column align-items-center bg-light p-4 rounded border">
+                            <p className="small fw-bold mb-2 text-primary text-uppercase">Scan to Pay Pending Balance: ₹{bill.balanceAmount}</p>
+                            <img
+                                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`upi://pay?pa=${profile.upiId}&pn=${profile.upiName || profile.name}&am=${Number(bill.balanceAmount).toFixed(2)}&cu=INR`)}`}
+                                alt="UPI QR"
+                                className="img-fluid border p-2 bg-white"
+                                style={{ width: '150px', height: '150px' }}
+                            />
+                            <p className="xsmall text-muted mt-2 fw-bold">{profile.upiId}</p>
+                        </div>
+                    )}
+
+                    <div className="mt-5 text-center text-muted small border-top pt-4">
                         <p className="mb-0 fw-bold">Thank you for choosing {profile?.name || 'our business'}!</p>
                         <p className="mb-0">This is a system generated tax invoice.</p>
                     </div>
@@ -423,7 +449,7 @@ const PrintBill = () => {
                     body { background: white !important; }
                     .print-btns { display: none !important; }
                     .min-h-screen { min-height: initial !important; background: white !important; padding: 0 !important; }
-                    .shadow-sm, .border { box-shadow: none !important; border: none !important; }
+                    .shadow-sm, .border { box-shadow: none !important; border: border: none !important; }
                 }
                 .ls-1 { letter-spacing: 1px; }
                 .truncate-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }

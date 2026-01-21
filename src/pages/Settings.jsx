@@ -125,6 +125,14 @@ const Settings = () => {
                                 </li>
                                 <li className="nav-item">
                                     <button
+                                        className={`nav-link border-0 rounded-0 py-3 fw-bold small ${activeTab === 'upi' ? 'active text-primary border-bottom' : 'text-muted'}`}
+                                        onClick={() => setActiveTab('upi')}
+                                    >
+                                        <i className="bi bi-qr-code me-2"></i> UPI Settings
+                                    </button>
+                                </li>
+                                <li className="nav-item">
+                                    <button
                                         className={`nav-link border-0 rounded-0 py-3 fw-bold small ${activeTab === 'logs' ? 'active text-primary border-bottom' : 'text-muted'}`}
                                         onClick={() => setActiveTab('logs')}
                                     >
@@ -194,41 +202,6 @@ const Settings = () => {
                                             />
                                         </div>
                                         <div className="col-12 mt-4">
-                                            <h5 className="fw-bold text-dark mb-4">Payment & QR Configuration</h5>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <label className="form-label small fw-bold text-muted">UPI ID for Payments</label>
-                                            <input
-                                                className="form-control"
-                                                placeholder="example@upi"
-                                                value={profileForm.upiId}
-                                                onChange={e => setProfileForm({ ...profileForm, upiId: e.target.value })}
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <label className="form-label small fw-bold text-muted">UPI Display Name</label>
-                                            <input
-                                                className="form-control"
-                                                placeholder="Business Name"
-                                                value={profileForm.upiName}
-                                                onChange={e => setProfileForm({ ...profileForm, upiName: e.target.value })}
-                                            />
-                                        </div>
-                                        <div className="col-12">
-                                            <div className="form-check form-switch">
-                                                <input
-                                                    className="form-check-input"
-                                                    type="checkbox"
-                                                    id="enableQr"
-                                                    checked={profileForm.enableQrPayments}
-                                                    onChange={e => setProfileForm({ ...profileForm, enableQrPayments: e.target.checked })}
-                                                />
-                                                <label className="form-check-label small fw-bold text-muted" htmlFor="enableQr">
-                                                    Enable Dynamic UPI QR Generation in POS
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="col-12 mt-4">
                                             <button
                                                 type="submit"
                                                 className="btn btn-primary px-4 shadow"
@@ -242,6 +215,57 @@ const Settings = () => {
                                         </div>
                                     </form>
                                 )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* UPI TAB */}
+                    {activeTab === 'upi' && userInfo.role === 'admin' && (
+                        <div className="row">
+                            <div className="col-12 col-md-7">
+                                <h5 className="fw-bold text-dark mb-4">UPI & QR Configuration</h5>
+                                <form className="row g-3" onSubmit={handleUpdateProfile}>
+                                    <div className="col-md-6">
+                                        <label className="form-label small fw-bold text-muted">UPI ID for Payments</label>
+                                        <input
+                                            className="form-control"
+                                            placeholder="example@upi"
+                                            value={profileForm.upiId}
+                                            onChange={e => setProfileForm({ ...profileForm, upiId: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label small fw-bold text-muted">UPI Display Name</label>
+                                        <input
+                                            className="form-control"
+                                            placeholder="Business Name"
+                                            value={profileForm.upiName}
+                                            onChange={e => setProfileForm({ ...profileForm, upiName: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="col-12">
+                                        <div className="form-check form-switch">
+                                            <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                id="enableQr"
+                                                checked={profileForm.enableQrPayments}
+                                                onChange={e => setProfileForm({ ...profileForm, enableQrPayments: e.target.checked })}
+                                            />
+                                            <label className="form-check-label small fw-bold text-muted" htmlFor="enableQr">
+                                                Enable Dynamic UPI QR Generation in POS
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="col-12 mt-4">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary px-4 shadow"
+                                        >
+                                            Save UPI Settings
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     )}

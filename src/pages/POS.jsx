@@ -483,7 +483,23 @@ const POS = () => {
                                                             </button>
                                                         </div>
                                                         {p.mode === 'UPI' && profile?.enableQrPayments && profile?.upiId && (
-                                                            <div className="col-12 mt-2 text-center bg-white p-3 rounded-3 border">
+                                                            <div className="col-12 mb-2">
+                                                                <div className="form-check form-switch d-inline-block">
+                                                                    <input
+                                                                        className="form-check-input"
+                                                                        type="checkbox"
+                                                                        checked={p.showQr || false}
+                                                                        onChange={(e) => handleUpdatePayment(idx, 'showQr', e.target.checked)}
+                                                                        id={`show-qr-${idx}`}
+                                                                    />
+                                                                    <label className="form-check-label xsmall fw-bold text-primary cursor-pointer" htmlFor={`show-qr-${idx}`}>
+                                                                        GENERATE QR CODE
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                        {p.mode === 'UPI' && p.showQr && profile?.enableQrPayments && profile?.upiId && (
+                                                            <div className="col-12 mt-0 text-center bg-white p-3 rounded-3 border">
                                                                 <p className="xsmall fw-bold text-primary mb-2 text-uppercase">Scan to Pay ₹{p.amount}</p>
                                                                 <div className="d-flex justify-content-center mb-2">
                                                                     <img

@@ -26,6 +26,7 @@ const Warehouse = () => {
     // Vendor Form State
     const [vendorForm, setVendorForm] = useState({ name: '', address: '', openingBalance: '' });
     const [productKeyword, setProductKeyword] = useState('');
+    const [showProductResults, setShowProductResults] = useState(false);
 
     // Purchase Return State
     const [returnModalOpen, setReturnModalOpen] = useState(false);
@@ -88,6 +89,8 @@ const Warehouse = () => {
             }).unwrap();
             setIsPurchaseModalOpen(false);
             setPurchaseForm({ vendor: '', items: [], payments: [{ mode: 'Cash', amount: 0, reference: '' }] });
+            setProductKeyword('');
+            setShowProductResults(false);
         } catch (err) {
             console.error(err);
             alert(err?.data?.message || 'Failed to create purchase');
@@ -303,11 +306,11 @@ const Warehouse = () => {
             {/* Purchase Modal */}
             {isPurchaseModalOpen && (
                 <div className="modal fade show d-block text-dark" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
-                    <div className="modal-dialog modal-dialog-centered modal-lg">
+                    <div className="modal-dialog modal-dialog-centered modal-xl">
                         <div className="modal-content border-0 shadow-lg">
                             <div className="modal-header border-0 px-4 pt-4">
                                 <h5 className="modal-title fw-bold">Create Purchase Voucher</h5>
-                                <button type="button" className="btn-close" onClick={() => { setIsPurchaseModalOpen(false); setProductKeyword(''); }}></button>
+                                <button type="button" className="btn-close" onClick={() => { setIsPurchaseModalOpen(false); setProductKeyword(''); setShowProductResults(false); }}></button>
                             </div>
                             <div className="modal-body p-4">
                                 <form onSubmit={handleCreatePurchase}>
@@ -339,11 +342,15 @@ const Warehouse = () => {
                                                         className="form-control border-start-0"
                                                         placeholder="SEARCH BY NAME OR BARCODE..."
                                                         value={productKeyword}
-                                                        onChange={(e) => setProductKeyword(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setProductKeyword(e.target.value);
+                                                            setShowProductResults(true);
+                                                        }}
+                                                        onFocus={() => setShowProductResults(true)}
                                                     />
                                                 </div>
-                                                {productKeyword && productsData?.products.length > 0 && (
-                                                    <div className="list-group position-absolute w-100 z-3 shadow-lg mt-1 rounded-3 overflow-hidden" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                                                {showProductResults && productKeyword && productsData?.products.length > 0 && (
+                                                    <div className="list-group position-absolute w-100 z-3 shadow-lg mt-1 rounded-3 overflow-hidden" style={{ maxHeight: '250px', overflowY: 'auto' }}>
                                                         {productsData.products.map(p => (
                                                             <button
                                                                 key={p._id}
@@ -352,30 +359,36 @@ const Warehouse = () => {
                                                                 onClick={() => {
                                                                     setCurrentItem({ ...currentItem, product: p._id, newSellingPrice: p.price });
                                                                     setProductKeyword(p.name);
+                                                                    setShowProductResults(false);
                                                                 }}
                                                             >
-                                                                <span className="fw-bold small">{p.name}</span>
+                                                                <div className="d-flex flex-column">
+                                                                    <span className="fw-bold small">{p.name}</span>
+                                                                    <span className="xsmall text-muted">Barcode: {p.barcode || 'N/A'}</span>
+                                                                </div>
                                                                 <span className="badge bg-primary rounded-pill xsmall">Stock: {p.stock}</span>
                                                             </button>
                                                         ))}
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className="col-md-3">
+                                            <div className="col-6 col-md-3">
                                                 <label className="form-label small fw-bold">Quantity</label>
                                                 <input type="number" placeholder="0" className="form-control" value={currentItem.quantity} onChange={e => setCurrentItem({ ...currentItem, quantity: e.target.value })} />
                                             </div>
-                                            <div className="col-md-3">
+                                            <div className="col-6 col-md-3">
                                                 <label className="form-label small fw-bold">Purchase Price (₹)</label>
                                                 <input type="number" placeholder="0.00" className="form-control" value={currentItem.purchasePrice} onChange={e => setCurrentItem({ ...currentItem, purchasePrice: e.target.value })} />
                                             </div>
-                                            <div className="col-md-3">
-                                                <label className="form-label small fw-bold">New Sale Price (Opt)</label>
+                                            <div className="col-6 col-md-3">
+                                                <label className="form-label small fw-bold">New Sale Price</label>
                                                 <input type="number" placeholder="Optional" className="form-control text-primary fw-bold" value={currentItem.newSellingPrice} onChange={e => setCurrentItem({ ...currentItem, newSellingPrice: e.target.value })} />
                                             </div>
-                                            <div className="col-md-3">
+                                            <div className="col-6 col-md-3">
                                                 <label className="form-label d-block small fw-bold opacity-0">Action</label>
-                                                <button type="button" onClick={() => { addItemToPurchase(); setProductKeyword(''); }} className="btn btn-dark w-100 fw-bold">Add Item</button>
+                                                <button type="button" onClick={() => { addItemToPurchase(); setProductKeyword(''); setShowProductResults(false); }} className="btn btn-primary w-100 fw-bold">
+                                                    <i className="bi bi-plus-lg me-1"></i> Add
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -448,7 +461,7 @@ const Warehouse = () => {
                                     )}
 
                                     <div className="d-flex justify-content-end gap-2">
-                                        <button type="button" onClick={() => { setIsPurchaseModalOpen(false); setProductKeyword(''); }} className="btn btn-light px-4">Cancel</button>
+                                        <button type="button" onClick={() => { setIsPurchaseModalOpen(false); setProductKeyword(''); setShowProductResults(false); }} className="btn btn-light px-4">Cancel</button>
                                         <button type="submit" className="btn btn-primary px-5 shadow" disabled={isCreatingPurchase || purchaseForm.items.length === 0 || !purchaseForm.vendor}>
                                             {isCreatingPurchase ? 'Creating...' : 'Register Purchase'}
                                         </button>

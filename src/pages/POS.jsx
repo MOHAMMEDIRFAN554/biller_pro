@@ -525,7 +525,7 @@ const POS = () => {
 
                             <div className="d-grid gap-3">
                                 <a
-                                    href={`/print/bill/${lastBillId}`}
+                                    href={`/#/print/bill/${lastBillId}`}
                                     target="_blank"
                                     rel="noreferrer"
                                     className="btn btn-primary py-3 fw-bold fs-5 shadow-sm d-flex align-items-center justify-content-center gap-2"

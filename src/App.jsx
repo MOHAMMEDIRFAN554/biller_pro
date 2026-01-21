@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
@@ -22,7 +22,7 @@ import NotFound from './pages/NotFound';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
 
@@ -52,7 +52,7 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

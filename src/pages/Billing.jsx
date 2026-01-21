@@ -169,7 +169,7 @@ const Billing = () => {
                                             <td className="px-4 py-3 text-end">
                                                 <div className="d-flex justify-content-end gap-2">
                                                     <button
-                                                        onClick={() => window.open(`/print/bill/${bill._id}`, '_blank')}
+                                                        onClick={() => window.open(`/#/print/bill/${bill._id}`, '_blank')}
                                                         className="btn btn-sm btn-outline-primary d-flex align-items-center gap-2 px-3"
                                                     >
                                                         <i className="bi bi-printer"></i> Print
@@ -221,7 +221,7 @@ const Billing = () => {
                                             <td className="px-4 py-3 text-end">
                                                 <button
                                                     className="btn btn-sm btn-outline-danger shadow-none"
-                                                    onClick={() => window.open(`/print/return/${ret._id}`, '_blank')}
+                                                    onClick={() => window.open(`/#/print/return/${ret._id}`, '_blank')}
                                                 >
                                                     <i className="bi bi-printer"></i> Receipt
                                                 </button>

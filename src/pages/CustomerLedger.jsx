@@ -129,17 +129,17 @@ const CustomerLedger = () => {
                                         <td className="py-3 text-muted">{t.status || t.mode || '-'}</td>
                                         <td className="px-4 py-3 text-end d-print-none">
                                             {t.type === 'SALE' && (
-                                                <a href={`/print/bill/${t.refId}`} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-primary shadow-none border-0">
+                                                <a href={`/#/print/bill/${t.refId}`} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-primary shadow-none border-0">
                                                     <i className="bi bi-printer"></i>
                                                 </a>
                                             )}
                                             {t.type === 'RETURN' && (
-                                                <a href={`/print/return/${t.refId}`} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-danger shadow-none border-0">
+                                                <a href={`/#/print/return/${t.refId}`} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-danger shadow-none border-0">
                                                     <i className="bi bi-printer"></i>
                                                 </a>
                                             )}
                                             {t.type === 'PAYMENT' && (
-                                                <a href={`/print/receipt/${t.refId}`} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-success shadow-none border-0">
+                                                <a href={`/#/print/receipt/${t.refId}`} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-success shadow-none border-0">
                                                     <i className="bi bi-printer"></i>
                                                 </a>
                                             )}

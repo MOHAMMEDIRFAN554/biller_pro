@@ -27,7 +27,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 try {
                     await queryFulfilled;
                     dispatch(logout());
-                    dispatch(apiSlice.util.resetApiState()); // Clear cache on logout
+                    dispatch(apiSlice.util.resetApiState()); 
                 } catch (err) { }
             }
         }),

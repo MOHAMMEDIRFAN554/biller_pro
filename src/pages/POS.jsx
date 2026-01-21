@@ -4,6 +4,7 @@ import { useGetProductsQuery } from '../redux/api/productsApiSlice';
 import { useGetCustomersQuery } from '../redux/api/customersApiSlice';
 import { useCreateBillMutation } from '../redux/api/billsApiSlice';
 import { addToCart, updateCartQty, removeFromCart, updateCartDiscount, setGlobalDiscount, setCustomer, clearCart } from '../redux/slices/cartSlice';
+import { useGetCompanyProfileQuery } from '../redux/api/settingsApiSlice';
 
 const POS = () => {
     const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const POS = () => {
 
     const { data: productsData } = useGetProductsQuery({ keyword, limit: 100 });
     const { data: customersData } = useGetCustomersQuery({ keyword: customerSearch });
+    const { data: profile } = useGetCompanyProfileQuery();
     const [createBill, { isLoading: isCreating }] = useCreateBillMutation();
 
     const calculateTotals = () => {
